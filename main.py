@@ -52,6 +52,6 @@ class Voltaire():
         self.baisage()
         
 
-bot = Voltaire('nicolas.demol@esme.fr','125478Nyco-')
+bot = Voltaire('','')
 bot.select_prog()
 bot.baisage()
