@@ -3,37 +3,35 @@ from time import sleep
 
 class Voltaire():
     def __init__(self, username, pw):
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Firefox()
         self.driver.get("https://www.projet-voltaire.fr/voltaire/com.woonoz.gwt.woonoz.Voltaire/Voltaire.html?texte&returnUrl=www.projet-voltaire.fr/")
         self.driver.maximize_window()
-        sleep(1)
+        sleep(2)
         self.driver.find_element_by_xpath("//input[@type=\"text\"]").send_keys(username)
         self.driver.find_element_by_xpath("//input[@type=\"password\"]").send_keys(pw)
         self.driver.find_element_by_xpath("//button[@type=\"submit\"]").click()
-        sleep(2)
+        sleep(3)
+        self.select_prog()
 
     def select_prog(self):
         option = self.driver.find_element_by_id('activityCellDiv_2') 
         option.click()
-        sleep(3) 
+        sleep(3)
 
-    def baisage(self):
+    def next_move(self):
         pasfaute = self.driver.find_element_by_id('btn_pas_de_faute')
         suivant = self.driver.find_element_by_id('btn_question_suivante')
         mot = self.driver.find_element_by_class_name('pointAndClickSpan')
         sleep(2)
-        try:
-            pasfaute.click()
-            sleep(1)
-            suivant.click()
-            self.baisage()    
-        except:
-            try:
-                fb = self.driver.find_element_by_id('btn_fermer')
-                fb.click()
-                self.baisage()
-            except:
-                self.video()
+        pasfaute.click()
+        sleep(1)
+        suivant.click()
+        self.process()
+
+    def ad_fb(self):
+        fb = self.driver.find_element_by_id('btn_fermer')
+        fb.click()
+        self.process()
 
     def video(self):
         compris = self.driver.find_element_by_class_name('understoodButton')
@@ -49,9 +47,20 @@ class Voltaire():
         abandon = self.driver.find_element_by_xpath("/html/body/div[7]/div/div/div/div[5]/button[3]")
         abandon.click()
         sleep(1)
-        self.baisage()
+        self.process()
+
+
+
+    def process(self):
+        try:
+            self.next_move()    
+        except:
+            try:
+                self.ad_fb()
+            except:
+                self.video()
+
         
 
-bot = Voltaire('','')
-bot.select_prog()
-bot.baisage()
+bot = Voltaire('nicolas.demol@esme.fr','125478Nyco-')
+bot.process()
