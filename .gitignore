@@ -1,3 +1,4 @@
 drivers
 user.json
-gecko.log
+geckodriver.log
+.DS_Store
