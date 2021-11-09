@@ -1,4 +1,4 @@
-#!/home/model/Documents/Dev/baiser_lprof/venv/bin/python3
+#!/Users/yolo/Documents/dev/Rousseau/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
