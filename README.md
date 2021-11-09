@@ -6,6 +6,8 @@ Je travaille sur la conception d'un prototype IA pour la future mise à jour.
 
 ## Prérequis
 
+- Python 3
+
 Vous devez disposez d'au moins un des navigateurs suivants:
 
 - Chrome version 95
@@ -13,8 +15,14 @@ Vous devez disposez d'au moins un des navigateurs suivants:
 
 ## Installation & Lancement
 
-Démarrer le programme à l'aide de la commande suivante:
+Installer les dépendances à l'aide de la commande suivante:
 
 ```console
-$ ./run.py
+$ pip install -r requirements.txt
+```
+
+Lancer le programme:
+
+```console
+$ python3 main.py
 ```

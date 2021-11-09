@@ -1,4 +1,3 @@
-#!./venv/bin/python3
 from selenium import webdriver
 from time import sleep
 import json
