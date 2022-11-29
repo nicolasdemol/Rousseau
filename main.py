@@ -1,11 +1,12 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from time import sleep
 import json
 import os
-import wget
-import tarfile
-import zipfile
-import stat
+from get_chrome_driver import GetChromeDriver
+from get_gecko_driver import GetGeckoDriver
+
+
 
 
 class Voltaire():
@@ -15,7 +16,7 @@ class Voltaire():
                 executable_path="./drivers/chromedriver")
         if(browser == "mozilla"):
             self.driver = webdriver.Firefox(
-                executable_path="./drivers/mozilladriver")
+                executable_path="./drivers/geckodriver")
         self.driver.get(
             "https://www.projet-voltaire.fr/voltaire/com.woonoz.gwt.woonoz.Voltaire/Voltaire.html?texte&returnUrl=www.projet-voltaire.fr/")
         self.driver.maximize_window()
@@ -26,27 +27,18 @@ class Voltaire():
             "//input[@type=\"password\"]").send_keys(user_pwd)
         self.driver.find_element_by_xpath("//button[@type=\"submit\"]").click()
         sleep(3)
-        self.select_prog()
-
-    def select_prog(self):
-        option = self.driver.find_element_by_id('activityCellDiv_2')
+        option = self.driver.find_element_by_id('activityCellDiv_3')
         option.click()
-        sleep(3)
+        sleep(5)
 
     def next_move(self):
-        pasfaute = self.driver.find_element_by_id('btn_pas_de_faute')
-        suivant = self.driver.find_element_by_id('btn_question_suivante')
-        mot = self.driver.find_element_by_class_name('pointAndClickSpan')
-        sleep(2)
-        pasfaute.click()
-        sleep(1)
+        suivant = self.driver.find_element(By.ID, "btn_question_suivante")
         suivant.click()
         self.process()
 
     def ad_fb(self):
         fb = self.driver.find_element_by_id('btn_fermer')
         fb.click()
-        self.process()
 
     def video(self):
         compris = self.driver.find_element_by_class_name('understoodButton')
@@ -66,16 +58,9 @@ class Voltaire():
             "/html/body/div[7]/div/div/div/div[5]/button[3]")
         abandon.click()
         sleep(1)
-        self.process()
 
     def process(self):
-        try:
-            self.next_move()
-        except:
-            try:
-                self.ad_fb()
-            except:
-                self.video()
+        pass
 
 
 class User:
@@ -120,21 +105,15 @@ def check_driver(driver_name):
 
 def download_driver(driver_name):
     if (driver_name == "chromedriver"):
-        print("\n-> Téléchargement du driver pour Google Chrome version 95 en cours...")
-        url = "https://chromedriver.storage.googleapis.com/95.0.4638.69/chromedriver_mac64.zip"
-        wget.download(url, "./drivers/chromedriver.zip")
-        zipfile.ZipFile("./drivers/chromedriver.zip").extractall("./drivers/")
-        os.remove("./drivers/chromedriver.zip")
-        os.chmod("./drivers/chromedriver", stat.S_IRWXU |
-                 stat.S_IRWXG | stat.S_IXOTH)
+        print("\n-> Téléchargement du driver pour Google Chrome en cours...")
+        get_driver = GetChromeDriver()
+        get_driver.download_stable_version(extract=True, output_path='./drivers/')
 
-    if (driver_name == "mozilladriver"):
-        print("\n-> Téléchargement du driver pour Mozilla Firefox version 0.30 en cours...")
-        url = "https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-macos-aarch64.tar.gz"
-        wget.download(url, "./drivers/mozilladriver.tar.gz")
-        tarfile.open("./drivers/mozilladriver.tar.gz").extractall("./drivers/")
-        os.rename("./drivers/geckodriver", "./drivers/mozilladriver")
-        os.remove("./drivers/mozilladriver.tar.gz")
+    if (driver_name == "geckodriver"):
+        print("\n-> Téléchargement du driver pour Mozilla Firefox en cours...")
+        get_driver = GetGeckoDriver()
+        get_driver.download_latest_version(extract=True, output_path='./drivers')
+
 
 
 def select_driver():
@@ -160,7 +139,7 @@ def main():
     print("==========================================")
 
     check_driver("chromedriver")
-    check_driver("mozilladriver")
+    check_driver("geckodriver")
     browser_selected = select_driver()
 
     us = User

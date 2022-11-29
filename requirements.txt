@@ -1,2 +1,4 @@
 selenium==4.0.0
 wget==3.2
+get-chrome-driver
+get-gecko-driver
