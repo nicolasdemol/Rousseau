@@ -12,7 +12,7 @@ Vous devez disposez d'au moins un des navigateurs suivants:
 - Chrome
 - Firefox
 
-(!) Assurer vous d'avoir la dernière version installée
+:warning: Assurer vous d'avoir la dernière version installée
 
 ## Installation & Lancement
 
